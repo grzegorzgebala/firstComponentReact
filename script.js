@@ -1,4 +1,3 @@
-
 var movies = [
   {
     id: 1,
@@ -20,56 +19,52 @@ var movies = [
   }
 ];  
 
-var Movie = React.createClass({
-  propTypes: {
-    movie: React.PropTypes.object.isRequired,
-  },
-
-  render: function() {
-    return (
-      React.createElement('div', {},
-        React.createElement('h1', {}, 'Lista filmów')
-      )
-    )
-  }
-});
-
 var MovieTitle = React.createClass({
   propTypes: {
-    title: React.PropTypes.object.isRequired,
+    title: React.PropTypes.string.isRequired,
   },
 
   render: function() { 
     return (
       React.createElement('li', {}, 
-        React.createElement('h2', {}, this.props.title.title)
+        React.createElement('h2', {}, this.props.title)
       )
     )}
 });
 
 var MovieDescription = React.createClass({
   propTypes: {
-    desc: React.PropTypes.object.isRequired,
+    desc: React.PropTypes.string.isRequired,
   },
 
   render: function() {
-    return (
-      React.createElement('li', {},
-        React.createElement('p', {}, this.props.desc.desc)
-      )
-    )
+    console.log(this.props);
+    return React.createElement('p', {}, this.props.desc)
   }
 });
 
 var MovieImage = React.createClass({
   propTypes: {
-    poster: React.PropTypes.object.isRequired,
+    poster: React.PropTypes.string.isRequired,
   },
 
   render: function(item) {
+    return React.createElement('img', {src: this.props.poster})
+  }
+});
+
+var Movie = React.createClass({
+  propTypes: {
+    movie: React.PropTypes.object.isRequired,
+  },
+
+  render: function() {
+    var movie = this.props.movie;
     return (
       React.createElement('li', {}, 
-        React.createElement('img', {}, this.props.poster.poster)
+          React.createElement(MovieTitle, {title: movie.title}),
+          React.createElement(MovieDescription, {desc: movie.desc}),
+          React.createElement(MovieImage, {poster: movie.poster})
       )
     )
   }
@@ -82,17 +77,14 @@ var MoviesList = React.createClass({
 
   render: function () {
     var moviesList = this.props.data.map(function(item){
-      return (
-        React.createElement(Movie, {key: item.id, movie: item}),
-        React.createElement(MovieTitle, {key: item.id, title: item}),
-        React.createElement(MovieDescription, {key: item.id, desc: item})
-        //React.createElement(MovieImage, {key: item.id, poster: item})
-      );
-    });
-
+      return React.createElement(Movie, {key: item.id, movie: item})
+      })
     return (
-      React.createElement('ul', {}, moviesList)
-    );
+      React.createElement('div', {},
+        React.createElement('h1', {}, 'Lista filmów'),
+        React.createElement('ul', {}, moviesList)
+        )
+    )
   }
 });
 
